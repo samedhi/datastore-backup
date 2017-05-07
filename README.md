@@ -8,20 +8,22 @@ Load a backup of Google Datastore into your local `dev_appserver.py`
 3. Re-hydrate the backup data into `ndb.Model` entities
 
 # Detailed Steps
-1. Create a backup using one of the following methods. (~5 minutes + backup time)
+1. Create a backup of datastore in a Google Cloud Storage bucket using one of
+the following methods. (~5 minutes + backup time)
    1. [Instructions for creating backup](https://cloud.google.com/appengine/docs/standard/python/console/datastore-backing-up-restoring)
    2. [Instructions for creating periodic backup (Alpha)](https://cloud.google.com/appengine/articles/scheduled_backups)
+
 2. Download the backup from the Google Cloud Storage bucket created in the above step.
    1. Install and setup the Google Cloud Tools. The easiest
       way to do so is to download the bucket using `gsutil` ([available here](https://cloud.google.com/sdk/docs/)
       as the latest Google Cloud SDK).
-   2. Switch to the project that you contains the backups in question.
+   2. Switch to the project that contains the backups.
       ```bash
       # List out all the projects you have
       > gcloud projects list
 
       # switch active configuration to example-project-name
-      > gcloud config set project example-project-name
+      > gcloud config set project example-project
       ```
    3. Download the actual bucket using the name of the bucket that you specified
       in step 1.
@@ -29,7 +31,14 @@ Load a backup of Google Datastore into your local `dev_appserver.py`
       # This will download the specified bucket `.ds_backup` by default
       > ./dsbackup.py <bucket_name>
       ```
-3. Hydrate the backups into Datastore entities in your test or within your
+
+3. Use the same `APPLICATION_ID` on your `dev_appserver` or `webtest` that you
+   use on your production server. This can be done by setting the
+   [APPLICATION_ID on your testbed test](https://cloud.google.com/appengine/docs/standard/python/refdocs/google.appengine.ext.testbed) or setting the `APPLICATION_ID` as an environment variable in your
+   `dev_appserver`. Note that your `APPLICATION_ID` in production seems to be
+   `"s~" + <project_id>`. So this project name would be `s~example-project`.
+
+4. Hydrate the backup into Datastore entities in test or within
    `dev_appserver` using the following guiding example.
 
    ```python
@@ -51,8 +60,3 @@ Load a backup of Google Datastore into your local `dev_appserver.py`
                entity = ndb.Model._from_pb(entity_proto)
                entity.put()
    ```
-4. Use the same `APPLICATION_ID` on your `dev_appserver` or `webtest` that you
-use on your production server. This can be easily done by setting the
-[APPLICATION_ID on your testbed test](https://cloud.google.com/appengine/docs/standard/python/refdocs/google.appengine.ext.testbed) or setting the `APPLICATION_ID` as an environment variable in your
-`dev_appserver`. Note that your `APPLICATION_ID` in production seems to be
-`"s~" + <project_id>`.
