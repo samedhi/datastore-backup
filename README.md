@@ -28,7 +28,7 @@ the following methods. (~5 minutes + backup time)
    3. Download the actual bucket using the name of the bucket that you specified
       in step 1.
       ```bash
-      # This will download the specified bucket `.ds_backup` by default
+      # This will download the specified bucket to `.ds_backup`
       > ./dsbackup.py <bucket_name>
       ```
 
