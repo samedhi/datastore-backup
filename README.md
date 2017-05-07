@@ -36,7 +36,8 @@ the following methods. (~5 minutes + backup time)
    use on your production server. This can be done by setting the
    [APPLICATION_ID on your testbed test](https://cloud.google.com/appengine/docs/standard/python/refdocs/google.appengine.ext.testbed) or setting the `APPLICATION_ID` as an environment variable in your
    `dev_appserver`. Note that your `APPLICATION_ID` in production seems to be
-   `"s~" + <project_id>`. So this project name would be `s~example-project`.
+   `"s~" + <project_id>`. So this project's `APPLICATION_ID` would be
+   `s~example-project`.
 
 4. Hydrate the backup into Datastore entities in test or within
    `dev_appserver` using the following guiding example.
