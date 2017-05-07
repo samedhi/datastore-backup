@@ -16,7 +16,7 @@ Load a backup of Google Datastore into your local `dev_appserver.py`
       way to do so is to download the bucket using `gsutil` ([available here](https://cloud.google.com/sdk/docs/)
       as the latest Google Cloud SDK).
    2. Switch to the project that you contains the backups in question.
-      ```
+      ```bash
       # List out all the projects you have
       > gcloud projects list
 
@@ -25,13 +25,14 @@ Load a backup of Google Datastore into your local `dev_appserver.py`
       ```
    3. Download the actual bucket using the name of the bucket that you specified
       in step 1.
-      ```
+      ```bash
       # This will download the specified bucket `.ds_backup` by default
       > ./dsbackup.py <bucket_name>
       ```
 3. Hydrate the backups into Datastore entities in your test or within your
    `dev_appserver` using the following guiding example.
-   ```
+
+   ```python
    from google.appengine.api.files import records
    from google.appengine.datastore import entity_pb
    from google.appengine.ext import ndb
@@ -49,4 +50,4 @@ Load a backup of Google Datastore into your local `dev_appserver.py`
                entity_proto = entity_pb.EntityProto(contents=record)
                entity = ndb.Model._from_pb(entity_proto)
                entity.put()
-  ```
+   ```
